@@ -73,6 +73,7 @@ in SECURITY.md.
 from __future__ import annotations
 
 import ipaddress
+import os
 import re
 import socket
 import threading
@@ -345,6 +346,39 @@ def validate_url_strict(url: str) -> tuple[str, str]:
     return url, pinned
 
 
+_PROXY_ENV_VARS = (
+    "HTTPS_PROXY", "https_proxy",
+    "HTTP_PROXY", "http_proxy",
+    "ALL_PROXY", "all_proxy",
+)
+
+
+def _trusted_proxy_hosts() -> frozenset[str]:
+    """
+    Hostnames (or IP literals) of the egress proxy configured for this
+    process via the standard *_PROXY environment variables.
+
+    These come from the trusted process environment (set by whoever
+    launched the session), never from a network response, so they are
+    not an SSRF vector: a malicious redirect or embedded resource cannot
+    add itself to this set. Excluding them from the DNS-rebinding check
+    in ``_pin_dns`` is required because outbound connections in a
+    proxied sandbox legitimately dial a loopback/private address (the
+    proxy) for every hostname, which the unpatched check would reject
+    as "non-public IP" for the transport hop itself rather than for the
+    hostname the request is actually addressed to.
+    """
+    hosts = set()
+    for var in _PROXY_ENV_VARS:
+        value = os.environ.get(var)
+        if not value:
+            continue
+        host = urlparse(value).hostname
+        if host:
+            hosts.add(host.lower())
+    return frozenset(hosts)
+
+
 # A single non-blocking lock guards the global getaddrinfo monkey-patch.
 # This is a deliberate choice: claude-seo scripts run one URL fetch at a
 # time, and we'd rather raise loudly than silently corrupt resolver state
@@ -378,6 +412,7 @@ def _pin_dns(hostname: str, pinned_ip: str, port: int) -> Iterator[None]:
 
     original_getaddrinfo = socket.getaddrinfo
     target = hostname.lower()
+    proxy_hosts = _trusted_proxy_hosts()
 
     def patched(host, requested_port, *args, **kwargs):
         # Branch 1: the originally-pinned host returns the validated IP
@@ -397,6 +432,13 @@ def _pin_dns(hostname: str, pinned_ip: str, port: int) -> Iterator[None]:
                 f"url_safety: address family {family} refused for pinned "
                 f"IPv4 host {host}",
             )
+
+        # Branch 1b: the configured egress proxy is trusted transport, not
+        # an SSRF vector (its address comes from the process environment,
+        # not from anything the response/redirect could influence) — skip
+        # the non-public-IP check for it so proxied sandboxes can connect.
+        if host and host.lower() in proxy_hosts:
+            return original_getaddrinfo(host, requested_port, *args, **kwargs)
 
         # Branch 2: every OTHER hostname (redirect target, embedded
         # subresource, library bookkeeping) gets resolved by the real
