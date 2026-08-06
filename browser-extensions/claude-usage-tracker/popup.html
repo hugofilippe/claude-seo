@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Claude Usage Tracker</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        width: 260px;
+        padding: 12px;
+        color: #1a1a1a;
+      }
+      h1 {
+        font-size: 13px;
+        font-weight: 600;
+        margin: 0 0 10px;
+        color: #1e3a5f;
+      }
+      .percent {
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .meta {
+        font-size: 11px;
+        color: #666;
+        margin-bottom: 4px;
+      }
+      .error {
+        font-size: 11px;
+        color: #c53030;
+        margin-bottom: 8px;
+      }
+      button {
+        width: 100%;
+        padding: 6px;
+        margin-top: 8px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background: #f7f7f7;
+      }
+      button:hover {
+        background: #eee;
+      }
+      details {
+        margin-top: 10px;
+      }
+      summary {
+        font-size: 11px;
+        cursor: pointer;
+        color: #444;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        margin-top: 8px;
+        color: #444;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 4px;
+        font-size: 12px;
+        margin-top: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Claude Usage Tracker</h1>
+    <div class="percent" id="percent">--%</div>
+    <div class="meta" id="meta">Sin datos todavía</div>
+    <div class="error" id="error" style="display: none"></div>
+    <button id="refresh">Actualizar ahora</button>
+    <details>
+      <summary>Configuración</summary>
+      <label for="url">URL de la página de uso</label>
+      <input id="url" type="text" />
+      <label for="interval">Intervalo de revisión (minutos)</label>
+      <input id="interval" type="number" min="5" />
+      <button id="save">Guardar</button>
+    </details>
+    <script src="popup.js"></script>
+  </body>
+</html>
