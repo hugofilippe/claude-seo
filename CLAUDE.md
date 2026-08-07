@@ -4,14 +4,15 @@
 
 This repository contains **Claude SEO**, a Tier 4 Claude Code skill for comprehensive
 SEO analysis across all industries. It follows the Agent Skills open standard and the
-3-layer architecture (directive, orchestration, execution). 25 sub-skills (21 core +
+3-layer architecture (directive, orchestration, execution). 26 sub-skills (22 core +
 1 orchestrator + 1 framework integration + 2 extension mirrors), 18 sub-agents (15 core +
 1 framework integration + 2 extension mirrors), and an extensible reference
 system cover technical SEO, content quality,
 schema markup, image optimization, sitemap architecture, AI search optimization,
 local SEO (GBP, citations, reviews, map pack), maps intelligence, semantic topic
 clustering, search experience optimization (SXO), SEO drift monitoring, e-commerce
-SEO, and international SEO with cultural adaptation profiles.
+SEO, an end-to-end article creation pipeline, and international SEO with cultural
+adaptation profiles.
 
 ## Architecture
 
@@ -23,7 +24,7 @@ claude-seo/
   .claude-plugin/
     plugin.json                    # Plugin manifest (v2.2.4)
     marketplace.json               # Marketplace catalog for distribution
-  skills/                            # 25 sub-skills (auto-discovered)
+  skills/                            # 26 sub-skills (auto-discovered)
     seo/                           # Main orchestrator skill
       SKILL.md                     # Entry point, routing table, core rules
       references/                  # On-demand knowledge files (13 files)
@@ -32,6 +33,9 @@ claude-seo/
     seo-technical/SKILL.md       # Technical SEO (9 categories)
     seo-content/SKILL.md         # E-E-A-T and content quality
     seo-content-brief/SKILL.md   # Content brief generation
+    seo-article-pipeline/        # End-to-end article pipeline: brief -> draft -> QC -> schema
+      SKILL.md
+      references/                # QC threshold reference
     seo-schema/SKILL.md          # Schema.org markup detection/generation
     seo-sitemap/SKILL.md         # XML sitemap analysis/generation
     seo-images/SKILL.md          # Image optimization analysis
@@ -160,6 +164,7 @@ claude-seo/
 | `/seo technical <url>` | Technical SEO across 9 categories |
 | `/seo content <url>` | E-E-A-T and content quality |
 | `/seo content-brief <topic>` | Detailed content brief: keywords, outline, internal links |
+| `/seo article-pipeline <topic or url>` | End-to-end article pipeline: brief, draft, automated QC, schema, publish-ready package |
 | `/seo schema <url>` | Schema markup detection, validation, generation |
 | `/seo sitemap <url>` | Sitemap validation |
 | `/seo sitemap generate` | Create new sitemap with industry templates |

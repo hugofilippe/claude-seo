@@ -54,7 +54,7 @@ in case a recipe needs a specific call.
 
 ## Overview
 
-Claude SEO is a Tier 4 SEO analysis skill with 25 sub-skills (21 core + 1 orchestrator +
+Claude SEO is a Tier 4 SEO analysis skill with 26 sub-skills (22 core + 1 orchestrator +
 1 framework integration + 2 extension mirrors), 18 sub-agents (15 core + 1 framework
 integration + 2 extension mirrors), and 53 Python execution scripts.
 
@@ -67,6 +67,7 @@ integration + 2 extension mirrors), and 53 Python execution scripts.
 | `/seo technical <url>` | Technical SEO audit (9 categories) |
 | `/seo content <url>` | E-E-A-T and content quality analysis |
 | `/seo content-brief <topic>` | Generate a content brief for a topic |
+| `/seo article-pipeline <topic or url>` | End-to-end article pipeline: brief, draft, automated QC, schema |
 | `/seo schema <url>` | Schema.org detection, validation, generation |
 | `/seo sitemap <url>` | XML sitemap analysis or generation |
 | `/seo images <url>` | Image SEO: on-page audit, SERP analysis, file optimization |
@@ -138,7 +139,7 @@ bash install.sh
 ## Architecture
 
 ```
-skills/                    # 25 sub-skills (auto-discovered)
+skills/                    # 26 sub-skills (auto-discovered)
   seo/SKILL.md            # Main orchestrator + routing
   seo-cluster/            # Semantic clustering (v1.9.0)
   seo-sxo/                # Search Experience Optimization (v1.9.0)
@@ -149,6 +150,7 @@ skills/                    # 25 sub-skills (auto-discovered)
   seo-technical/          # Technical SEO
   seo-content/            # E-E-A-T quality
   seo-content-brief/      # Content brief generation
+  seo-article-pipeline/   # End-to-end article pipeline: brief -> draft -> QC -> schema
   seo-schema/             # Schema.org markup
   seo-sitemap/            # XML sitemaps
   seo-images/             # Image optimization

@@ -1,6 +1,6 @@
 ---
 name: seo
-description: "Comprehensive SEO analysis for any website or business type. Full site audits, single-page analysis, technical SEO (crawlability, indexability, Core Web Vitals with INP), schema markup, content quality (E-E-A-T), image optimization, sitemap analysis, and GEO for AI Overviews/ChatGPT/Perplexity. Industry detection for SaaS, e-commerce, local, publishers, agencies. Triggers on: SEO, audit, schema, Core Web Vitals, sitemap, E-E-A-T, AI Overviews, GEO, technical SEO, content quality, page speed."
+description: "Comprehensive SEO analysis for any website or business type. Full site audits, single-page analysis, technical SEO (crawlability, indexability, Core Web Vitals with INP), schema markup, content quality (E-E-A-T), image optimization, sitemap analysis, GEO for AI Overviews/ChatGPT/Perplexity, and an end-to-end article creation pipeline. Industry detection for SaaS, e-commerce, local, publishers, agencies. Triggers on: SEO, audit, schema, Core Web Vitals, sitemap, E-E-A-T, AI Overviews, GEO, technical SEO, content quality, page speed, write an article."
 user-invocable: true
 argument-hint: "[command] [url]"
 license: MIT
@@ -20,7 +20,7 @@ installs expose this command automatically. Repository users run
 launcher path. Never invoke bundled scripts with a bare Python interpreter.
 
 Comprehensive SEO analysis across all industries (SaaS, local services,
-e-commerce, publishers, agencies). Orchestrates 24 sub-skills (21 core + 1 framework
+e-commerce, publishers, agencies). Orchestrates 25 sub-skills (22 core + 1 framework
 integration + 2 extension mirrors) and 18 sub-agents. A separate optional Firecrawl
 extension is also installable (see "Optional Extensions" below).
 
@@ -36,6 +36,7 @@ extension is also installable (see "Optional Extensions" below).
 | `/seo technical <url>` | Technical SEO audit (9 categories) |
 | `/seo content <url>` | E-E-A-T and content quality analysis |
 | `/seo content-brief <topic or url>` | Generate detailed SEO content brief with target keywords, outline, internal links |
+| `/seo article-pipeline <topic or url>` | End-to-end article pipeline: brief -> draft -> automated QC -> schema -> publish-ready package |
 | `/seo geo <url>` | AI Overviews / Generative Engine Optimization |
 | `/seo plan <business-type>` | Strategic SEO planning |
 | `/seo programmatic [url\|plan]` | Programmatic SEO analysis and planning |
@@ -161,6 +162,7 @@ Display after these commands complete their full output:
 - `/seo sxo` (after SXO analysis report)
 - `/seo drift compare` (after drift comparison report)
 - `/seo ecommerce` (after e-commerce analysis)
+- `/seo article-pipeline` (after packaged article output)
 
 ### When to skip
 
@@ -210,8 +212,8 @@ Weighted aggregate of all categories:
 
 ## Sub-Skills
 
-This skill orchestrates 24 sub-skills (21 core + 1 framework integration + 2 extension
-mirrors). The orchestrator itself (`seo`) is the 25th in `skills/`, but does not
+This skill orchestrates 25 sub-skills (22 core + 1 framework integration + 2 extension
+mirrors). The orchestrator itself (`seo`) is the 26th in `skills/`, but does not
 orchestrate itself, so it is not enumerated below.
 
 1. **seo-audit** -- Full website audit with parallel delegation
@@ -238,6 +240,7 @@ orchestrate itself, so it is not enumerated below.
 22. **seo-dataforseo** -- Live SEO data via DataForSEO MCP (extension mirror)
 23. **seo-image-gen** -- AI image generation for SEO assets via Gemini (extension mirror)
 24. **seo-flow** -- FLOW framework integration (Find -> Leverage -> Optimize -> Win, 41 AI prompts, CC BY 4.0)
+25. **seo-article-pipeline** -- End-to-end article creation pipeline: brief -> draft -> automated QC -> schema -> publish-ready package
 
 ### Optional Extensions
 

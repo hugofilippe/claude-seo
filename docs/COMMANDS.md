@@ -118,6 +118,30 @@ Generate a detailed SEO content brief: target keywords, search intent, heading o
 
 ---
 
+### `/seo article-pipeline <topic or url>`
+
+End-to-end article pipeline: brief, draft, automated quality QC, schema, and a publish-ready package, in one command. Does not publish anywhere; stops at a reviewed, packaged deliverable.
+
+**Example:**
+```
+/seo article-pipeline "best running shoes for flat feet"
+```
+
+**What it does:**
+1. Runs `seo-content-brief` for research, outline, and meta tags
+2. Drafts the article against that outline and brief
+3. Runs `content_quality.py` and `content_verify.py`, revising the draft until both pass (max 2 revision passes)
+4. Runs `content_humanize.py` as a last-mile cleanup pass
+5. Runs the `seo-content` structural QC checklist (E-E-A-T, word count, brief coverage)
+6. Generates Article/BlogPosting JSON-LD (never FAQPage, see quality gates)
+
+**What it produces:**
+- `{slug}-article/01-brief.md` through `04-schema.json`
+- `{slug}-article/qc-report.json` with the full automated + structural QC trail
+- A summary of anything still needing human input (YMYL review, missing author bio, placeholder schema fields)
+
+---
+
 ### `/seo schema <url>`
 
 Schema markup detection, validation, and generation.
@@ -696,6 +720,7 @@ Multi-page Lighthouse audit via Unlighthouse (extension, MIT, no API quota). **P
 | `/seo technical <url>` | Technical SEO across 9 categories |
 | `/seo content <url>` | E-E-A-T and content quality |
 | `/seo content-brief <topic>` | Detailed content brief: keywords, outline, internal links |
+| `/seo article-pipeline <topic or url>` | End-to-end article pipeline: brief, draft, automated QC, schema, publish-ready package |
 | `/seo schema <url>` | Schema markup detection, validation, generation |
 | `/seo sitemap <url>` | Sitemap validation |
 | `/seo sitemap generate` | Create new sitemap with industry templates |
